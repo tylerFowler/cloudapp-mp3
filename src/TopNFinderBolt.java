@@ -29,7 +29,32 @@ public class TopNFinderBolt extends BaseBasicBolt {
 
 
     ------------------------------------------------- */
+    String word = tuple.getStringByField("word");
+    Integer count = tuple.getIntegerByField("count");
 
+    currentTopWords.put(word, count);
+
+    // if we're over N, remove the smallest count
+    if (currentTopWords.size() > this.N) {
+      Integer smallestCount = null;
+      String smallestCountWord = null;
+
+      for (String wordKey : currentTopWords.keySet()) {
+        if (smallestCount == null) {
+          // this is the first element being processed
+          smallestCount = currentTopWords.get(wordKey);
+          smallestCountWord = wordKey;
+        } else if (currentTopWords.get(wordKey) < smallestCount) {
+          // we have a new smallest count
+          smallestCount = currentTopWords.get(wordKey);
+          smallestCountWord = wordKey;
+        }
+      }
+
+      currentTopWords.remove(smallestCountWord);
+    }
+
+    collector.emit(new Values(word, count))
 
     //reports the top N words periodically
     if (System.currentTimeMillis() - lastReportTime >= intervalToReport) {
