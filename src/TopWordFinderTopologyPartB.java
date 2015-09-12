@@ -18,7 +18,7 @@ public class TopWordFinderTopologyPartB {
   public static void main(String[] args) throws Exception {
 
     TopologyBuilder builder = new TopologyBuilder();
-
+    System.out.println("GOT FILE " + args[0]);
     builder.setSpout("spout", new FileReaderSpout(args[0]), 1);
     builder.setBolt("split", new SplitSentenceBolt(), 8).shuffleGrouping("spout");
     builder.setBolt("count", new WordCountBolt(), 12).fieldsGrouping("split", new Fields("word"));
