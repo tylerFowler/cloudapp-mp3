@@ -36,9 +36,6 @@ public class TopWordFinderTopologyPartC {
     SplitSentenceBolt -> "split"
     WordCountBolt -> "count"
     NormalizerBolt -> "normalize"
-
-
-
     ------------------------------------------------- */
     builder.setSpout("spout", new FileReaderSpout(args[0]), 1);
     builder.setBolt("split", new SplitSentenceBolt(), 8).shuffleGrouping("spout");
