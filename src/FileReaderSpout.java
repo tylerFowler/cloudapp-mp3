@@ -19,7 +19,6 @@ public class FileReaderSpout implements IRichSpout {
   private String inputFilename;
 
   public FileReaderSpout(String inputFilename) {
-    super();
     this.inputFilename = inputFilename;
   }
 
