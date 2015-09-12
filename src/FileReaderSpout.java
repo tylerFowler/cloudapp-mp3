@@ -24,7 +24,7 @@ public class FileReaderSpout implements IRichSpout {
 
   @Override
   public void open(Map conf, TopologyContext context,
-                   SpoutOutputCollector collector) {
+                   SpoutOutputCollector collector) throws Exception {
 
     try {
       File file = new File(inputFilename);
@@ -38,7 +38,7 @@ public class FileReaderSpout implements IRichSpout {
   }
 
   @Override
-  public void nextTuple() {
+  public void nextTuple() throws Exception {
 
      /*
     ----------------------TODO-----------------------
@@ -66,7 +66,7 @@ public class FileReaderSpout implements IRichSpout {
   }
 
   @Override
-  public void close() {
+  public void close() throws Exception {
    /*
     ----------------------TODO-----------------------
     Task: close the file
