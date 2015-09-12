@@ -26,7 +26,7 @@ public class FileReaderSpout implements IRichSpout {
 
   @Override
   public void open(Map conf, TopologyContext context,
-                   SpoutOutputCollector collector) throws FileNotFoundException {
+                   SpoutOutputCollector collector) {
 
     try {
       File file = new File(inputFilename);
