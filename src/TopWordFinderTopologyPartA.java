@@ -25,20 +25,14 @@ public class TopWordFinderTopologyPartA {
     Config config = new Config();
     config.setDebug(true);
 
+    config.setMaxTaskParallelism(3);
 
-    if (args != null && args.length > 0) {
-      conf.setNumWorkers(3);
-      StormSubmitter.submitTopology(args[0], conf, builder.createTopology());
-    } else {
-      config.setMaxTaskParallelism(3);
+    LocalCluster cluster = new LocalCluster();
+    cluster.submitTopology("word-count", config, builder.createTopology());
 
-      LocalCluster cluster = new LocalCluster();
-      cluster.submitTopology("word-count", config, builder.createTopology());
+    //wait for 60 seconds and then kill the topology
+    Thread.sleep(60 * 1000);
 
-      //wait for 60 seconds and then kill the topology
-      Thread.sleep(60 * 1000);
-
-      cluster.shutdown();
-    }
+    cluster.shutdown();
   }
 }
