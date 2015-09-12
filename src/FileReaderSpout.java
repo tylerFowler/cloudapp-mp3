@@ -1,4 +1,4 @@
-
+import java.io.File;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -15,18 +15,25 @@ import backtype.storm.tuple.Values;
 public class FileReaderSpout implements IRichSpout {
   private SpoutOutputCollector _collector;
   private TopologyContext context;
+  private BufferedReader inputReader;
+  private String inputFilename;
 
+  @Override
+  public FileReaderSpout(String inputFilename) {
+    super();
+    this.inputFilename = inputFilename;
+  }
 
   @Override
   public void open(Map conf, TopologyContext context,
-                   SpoutOutputCollector collector) {
+                   SpoutOutputCollector collector) throws FileNotFoundException {
 
-     /*
-    ----------------------TODO-----------------------
-    Task: initialize the file reader
-
-
-    ------------------------------------------------- */
+    try {
+      File file = new File(inputFilename);
+      inputReader = new BufferedReader(new FileRader(file));
+    } catch (FileNotFoundException e) {
+      throw e; // bubble up
+    }
 
     this.context = context;
     this._collector = collector;
@@ -43,7 +50,13 @@ public class FileReaderSpout implements IRichSpout {
 
     ------------------------------------------------- */
 
+    String line = inputReader.readLine();
 
+    if (line != null) {
+      _collector.emit(new Values(line));
+    } else {
+      Thread.sleep(10000); // 10 seconds to prevent busy loop
+    }
   }
 
   @Override
@@ -61,7 +74,7 @@ public class FileReaderSpout implements IRichSpout {
 
 
     ------------------------------------------------- */
-
+    if (inputReader != null) inputReader.close();
   }
 
 
