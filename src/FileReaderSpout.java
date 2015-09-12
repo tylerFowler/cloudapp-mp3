@@ -18,7 +18,6 @@ public class FileReaderSpout implements IRichSpout {
   private BufferedReader inputReader;
   private String inputFilename;
 
-  @Override
   public FileReaderSpout(String inputFilename) {
     super();
     this.inputFilename = inputFilename;
@@ -30,9 +29,9 @@ public class FileReaderSpout implements IRichSpout {
 
     try {
       File file = new File(inputFilename);
-      inputReader = new BufferedReader(new FileRader(file));
+      this.inputReader = new BufferedReader(new FileReader(file));
     } catch (FileNotFoundException e) {
-      throw e; // bubble up
+      // throw e; // bubble up
     }
 
     this.context = context;
@@ -49,14 +48,15 @@ public class FileReaderSpout implements IRichSpout {
     2. don't forget to sleep when the file is entirely read to prevent a busy-loop
 
     ------------------------------------------------- */
+    try {
+      String line = inputReader.readLine();
 
-    String line = inputReader.readLine();
-
-    if (line != null) {
-      _collector.emit(new Values(line));
-    } else {
-      Thread.sleep(10000); // 10 seconds to prevent busy loop
-    }
+      if (line != null) {
+        _collector.emit(new Values(line));
+      } else {
+        Thread.sleep(10000); // 10 seconds to prevent busy loop
+      }
+    } catch (Exception e) {}
   }
 
   @Override
@@ -74,7 +74,9 @@ public class FileReaderSpout implements IRichSpout {
 
 
     ------------------------------------------------- */
-    if (inputReader != null) inputReader.close();
+    try {
+      if (inputReader != null) inputReader.close();
+    } catch (Exception e) {}
   }
 
 
