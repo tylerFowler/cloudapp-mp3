@@ -16,27 +16,14 @@ import backtype.storm.tuple.Values;
 public class TopWordFinderTopologyPartA {
 
   public static void main(String[] args) throws Exception {
-
     TopologyBuilder builder = new TopologyBuilder();
+
+    builder.setSpout("spout", new RandomSentenceSpout(), 5);
+    builder.setBolt("split", new SplitSentenceBolt(), 8).shuffleGrouping("spout");
+    builder.setBolt("count", new WordCountBolt(), 12).fieldsGrouping("split", new Fields("word"));
 
     Config config = new Config();
     config.setDebug(true);
-
-
-    /*
-    ----------------------TODO-----------------------
-    Task: wire up the topology
-
-    NOTE:make sure when connecting components together, using the functions setBolt(name,…) and setSpout(name,…),
-    you use the following names for each component:
-
-    RandomSentanceSpout -> "spout"
-    SplitSentenceBolt -> "split"
-    WordCountBolt -> "count"
-
-
-    ------------------------------------------------- */
-
 
     config.setMaxTaskParallelism(3);
 
