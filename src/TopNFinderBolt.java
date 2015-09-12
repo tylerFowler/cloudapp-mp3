@@ -54,7 +54,7 @@ public class TopNFinderBolt extends BaseBasicBolt {
       currentTopWords.remove(smallestCountWord);
     }
 
-    collector.emit(new Values(word, count))
+    collector.emit(new Values(word, count));
 
     //reports the top N words periodically
     if (System.currentTimeMillis() - lastReportTime >= intervalToReport) {
