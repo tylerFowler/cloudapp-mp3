@@ -28,7 +28,7 @@ public class NormalizerBolt extends BaseBasicBolt {
      2. remove the common words
 
     ------------------------------------------------- */
-    String word = tuple.getStringByField("word");
+    String word = tuple.getString(0);
 
     if (commonWords.contains(word.toLowerCase())) {
       return;
@@ -39,8 +39,6 @@ public class NormalizerBolt extends BaseBasicBolt {
 
   @Override
   public void declareOutputFields(OutputFieldsDeclarer declarer) {
-
     declarer.declare(new Fields("word"));
-
   }
 }
