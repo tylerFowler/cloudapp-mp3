@@ -24,13 +24,13 @@ public class FileReaderSpout implements IRichSpout {
 
   @Override
   public void open(Map conf, TopologyContext context,
-                   SpoutOutputCollector collector) throws Exception {
+                   SpoutOutputCollector collector) {
 
     try {
-      File file = new File(inputFilename);
+      File file = new File(this.inputFilename);
       this.inputReader = new BufferedReader(new FileReader(file));
     } catch (Exception e) {
-      throw e;
+      System.out.println("Got an error " + e);
     }
 
     this.context = context;
@@ -38,7 +38,7 @@ public class FileReaderSpout implements IRichSpout {
   }
 
   @Override
-  public void nextTuple() throws Exception {
+  public void nextTuple() {
 
      /*
     ----------------------TODO-----------------------
@@ -55,7 +55,7 @@ public class FileReaderSpout implements IRichSpout {
       } else {
         Thread.sleep(10000); // 10 seconds to prevent busy loop
       }
-    } catch (Exception e) { throw e; }
+    } catch (Exception e) { System.out.println("Got an error " + e); }
   }
 
   @Override
@@ -66,7 +66,7 @@ public class FileReaderSpout implements IRichSpout {
   }
 
   @Override
-  public void close() throws Exception {
+  public void close() {
    /*
     ----------------------TODO-----------------------
     Task: close the file
@@ -75,7 +75,7 @@ public class FileReaderSpout implements IRichSpout {
     ------------------------------------------------- */
     try {
       if (inputReader != null) inputReader.close();
-    } catch (Exception e) { throw e; }
+    } catch (Exception e) { System.out.println("Got an error " + e); }
   }
 
 
