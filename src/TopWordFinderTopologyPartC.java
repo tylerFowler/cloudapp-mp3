@@ -48,7 +48,7 @@ public class TopWordFinderTopologyPartC {
     cluster.submitTopology("word-count", config, builder.createTopology());
 
     //wait for 2 minutes then kill the job
-    Thread.sleep(5 * 60 * 1000);
+    Thread.sleep(10 * 60 * 1000);
 
     cluster.shutdown();
   }
