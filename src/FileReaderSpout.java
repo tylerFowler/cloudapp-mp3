@@ -27,6 +27,7 @@ public class FileReaderSpout implements IRichSpout {
                    SpoutOutputCollector collector) {
 
     try {
+      System.out.println("LOADING FILE " + inputFilename);
       File file = new File(this.inputFilename);
       this.inputReader = new BufferedReader(new FileReader(file));
     } catch (Exception e) {
